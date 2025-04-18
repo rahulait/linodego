@@ -76,7 +76,7 @@ type Instance struct {
 	LKEClusterID int      `json:"lke_cluster_id"`
 	Capabilities []string `json:"capabilities"`
 
-	// Note: 
+	// Note: Linode interfaces may not currently be available to all users.
 	InterfaceGeneration InterfaceGeneration `json:"interface_generation"`
 }
 
@@ -239,6 +239,7 @@ type InstanceCreateOptionsWithLinodeInterfaces struct {
 
 	IPv4 []string `json:"ipv4,omitempty"`
 
+	// Note: Linode interfaces may not currently be available to all users.
 	InterfaceGeneration InterfaceGeneration `json:"interface_generation"`
 }
 
@@ -386,6 +387,8 @@ func (c *Client) CreateInstance(ctx context.Context, opts InstanceCreateOptions)
 	return doPOSTRequest[Instance](ctx, c, "linode/instances", opts)
 }
 
+// Create a Linode instance with Linode interfaces.
+// Note: Linode interfaces may not currently be available to all users.
 func (c *Client) CreateInstanceWithLinodeInterfaces(ctx context.Context, opts InstanceCreateOptionsWithLinodeInterfaces) (*Instance, error) {
 	return doPOSTRequest[Instance](ctx, c, "linode/instances", opts)
 }
