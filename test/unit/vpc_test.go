@@ -62,13 +62,18 @@ func TestVPC_Get(t *testing.T) {
 	defer base.TearDown(t)
 
 	fixtureData, err := fixtures.GetFixture("vpc_get")
+<<<<<<< HEAD
 	require.NoError(t, err)
 
+=======
+	assert.NoError(t, err)
+>>>>>>> 245b2f0 (Added support for `networking/` and `vpcs/` endpoint changs for VPC Linodes Enhanced Interfaces (#727))
 	base.MockGet("vpcs/123", fixtureData)
 
 	vpc, err := base.Client.GetVPC(context.Background(), 123)
 	assert.NoError(t, err, "Expected no error when getting VPC")
 	assert.NotNil(t, vpc, "Expected non-nil VPC")
+<<<<<<< HEAD
 
 	assertJSONObjectsSimilar(t, vpc, vpc.GetCreateOptions())
 	assertJSONObjectsSimilar(t, vpc, vpc.GetUpdateOptions())
@@ -84,6 +89,18 @@ func TestVPC_Get(t *testing.T) {
 	assert.Equal(t, 456, vpc.Subnets[0].ID)
 	assert.Equal(t, "subnet-1", vpc.Subnets[0].Label)
 	assert.Equal(t, "192.168.1.0/24", vpc.Subnets[0].IPv4)
+=======
+	assert.Equal(t, "A description of my VPC.", vpc.Description)
+	assert.Equal(t, 123, vpc.ID)
+	assert.Equal(t, "cool-vpc", vpc.Label)
+	assert.Equal(t, 456, vpc.Subnets[0].ID)
+	assert.Equal(t, "10.0.1.0/24", vpc.Subnets[0].IPv4)
+	assert.Equal(t, "cool-vpc-subnet", vpc.Subnets[0].Label)
+	assert.Equal(t, 111, vpc.Subnets[0].Linodes[0].ID)
+	assert.Equal(t, true, vpc.Subnets[0].Linodes[0].Interfaces[0].Active)
+	assert.Equal(t, 4567, *vpc.Subnets[0].Linodes[0].Interfaces[0].ConfigID)
+	assert.Equal(t, 421, vpc.Subnets[0].Linodes[0].Interfaces[0].ID)
+>>>>>>> 245b2f0 (Added support for `networking/` and `vpcs/` endpoint changs for VPC Linodes Enhanced Interfaces (#727))
 }
 
 func TestVPC_List(t *testing.T) {
@@ -101,6 +118,7 @@ func TestVPC_List(t *testing.T) {
 
 	assert.NotEmpty(t, vpcs, "Expected non-empty VPC list")
 
+<<<<<<< HEAD
 	assertJSONObjectsSimilar(t, vpcs[0], vpcs[0].GetCreateOptions())
 	assertJSONObjectsSimilar(t, vpcs[0], vpcs[0].GetUpdateOptions())
 
@@ -115,6 +133,20 @@ func TestVPC_List(t *testing.T) {
 	assert.Equal(t, 456, vpcs[0].Subnets[0].ID, "Expected subnet ID to match")
 	assert.Equal(t, "subnet-1", vpcs[0].Subnets[0].Label, "Expected subnet label to match")
 	assert.Equal(t, "192.168.1.0/24", vpcs[0].Subnets[0].IPv4, "Expected subnet IPv4 to match")
+=======
+	vpc := vpcs[0]
+
+	assert.Equal(t, "A description of my VPC.", vpc.Description)
+	assert.Equal(t, 123, vpc.ID)
+	assert.Equal(t, "cool-vpc", vpc.Label)
+	assert.Equal(t, 456, vpc.Subnets[0].ID)
+	assert.Equal(t, "192.0.2.210/24", vpc.Subnets[0].IPv4)
+	assert.Equal(t, "cool-vpc-subnet", vpc.Subnets[0].Label)
+	assert.Equal(t, 111, vpc.Subnets[0].Linodes[0].ID)
+	assert.Equal(t, true, vpc.Subnets[0].Linodes[0].Interfaces[0].Active)
+	assert.Nil(t, vpc.Subnets[0].Linodes[0].Interfaces[0].ConfigID)
+	assert.Equal(t, 421, vpc.Subnets[0].Linodes[0].Interfaces[0].ID)
+>>>>>>> 245b2f0 (Added support for `networking/` and `vpcs/` endpoint changs for VPC Linodes Enhanced Interfaces (#727))
 }
 
 func TestVPC_Update(t *testing.T) {

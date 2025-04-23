@@ -23,6 +23,7 @@ const (
 	CapabilityGPU                           string = "GPU Linodes"
 	CapabilityKubernetesEnterprise          string = "Kubernetes Enterprise"
 	CapabilityLADiskEncryption              string = "LA Disk Encryption"
+	CapabilityLinodeInterfaces              string = "Linode Interfaces"
 	CapabilityLKE                           string = "Kubernetes"
 	CapabilityLKEControlPlaneACL            string = "LKE Network Access Control List (IP ACL)"
 	CapabilityLinodes                       string = "Linodes"
