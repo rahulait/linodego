@@ -155,7 +155,7 @@ type NodeBalancerConfigUpdateOptions NodeBalancerConfigCreateOptions
 
 // GetCreateOptions converts a NodeBalancerConfig to NodeBalancerConfigCreateOptions for use in CreateNodeBalancerConfig
 func (i NodeBalancerConfig) GetCreateOptions() NodeBalancerConfigCreateOptions {
-	return NodeBalancerConfigCreateOptions{
+	createOpts := NodeBalancerConfigCreateOptions{
 		Port:          i.Port,
 		Protocol:      i.Protocol,
 		ProxyProtocol: i.ProxyProtocol,
@@ -168,16 +168,19 @@ func (i NodeBalancerConfig) GetCreateOptions() NodeBalancerConfigCreateOptions {
 		CheckPath:     i.CheckPath,
 		CheckBody:     i.CheckBody,
 		CheckPassive:  copyBool(&i.CheckPassive),
-		UDPCheckPort:  &i.UDPCheckPort,
 		CipherSuite:   i.CipherSuite,
 		SSLCert:       i.SSLCert,
 		SSLKey:        i.SSLKey,
 	}
+	if i.Protocol == ProtocolUDP {
+		createOpts.UDPCheckPort = &i.UDPCheckPort
+	}
+	return createOpts
 }
 
 // GetUpdateOptions converts a NodeBalancerConfig to NodeBalancerConfigUpdateOptions for use in UpdateNodeBalancerConfig
 func (i NodeBalancerConfig) GetUpdateOptions() NodeBalancerConfigUpdateOptions {
-	return NodeBalancerConfigUpdateOptions{
+	updateOpts := NodeBalancerConfigUpdateOptions{
 		Port:          i.Port,
 		Protocol:      i.Protocol,
 		ProxyProtocol: i.ProxyProtocol,
@@ -190,16 +193,19 @@ func (i NodeBalancerConfig) GetUpdateOptions() NodeBalancerConfigUpdateOptions {
 		CheckBody:     i.CheckBody,
 		CheckPassive:  copyBool(&i.CheckPassive),
 		CheckTimeout:  i.CheckTimeout,
-		UDPCheckPort:  copyInt(&i.UDPCheckPort),
 		CipherSuite:   i.CipherSuite,
 		SSLCert:       i.SSLCert,
 		SSLKey:        i.SSLKey,
 	}
+	if i.Protocol == ProtocolUDP {
+		updateOpts.UDPCheckPort = copyInt(&i.UDPCheckPort)
+	}
+	return updateOpts
 }
 
 // GetRebuildOptions converts a NodeBalancerConfig to NodeBalancerConfigRebuildOptions for use in RebuildNodeBalancerConfig
 func (i NodeBalancerConfig) GetRebuildOptions() NodeBalancerConfigRebuildOptions {
-	return NodeBalancerConfigRebuildOptions{
+	rebuildOpts := NodeBalancerConfigRebuildOptions{
 		Port:          i.Port,
 		Protocol:      i.Protocol,
 		ProxyProtocol: i.ProxyProtocol,
@@ -212,12 +218,15 @@ func (i NodeBalancerConfig) GetRebuildOptions() NodeBalancerConfigRebuildOptions
 		CheckPath:     i.CheckPath,
 		CheckBody:     i.CheckBody,
 		CheckPassive:  copyBool(&i.CheckPassive),
-		UDPCheckPort:  copyInt(&i.UDPCheckPort),
 		CipherSuite:   i.CipherSuite,
 		SSLCert:       i.SSLCert,
 		SSLKey:        i.SSLKey,
 		Nodes:         make([]NodeBalancerConfigRebuildNodeOptions, 0),
 	}
+	if i.Protocol == ProtocolUDP {
+		rebuildOpts.UDPCheckPort = copyInt(&i.UDPCheckPort)
+	}
+	return rebuildOpts
 }
 
 // ListNodeBalancerConfigs lists NodeBalancerConfigs
