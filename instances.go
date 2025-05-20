@@ -210,6 +210,15 @@ type InstanceCreateOptions struct {
 	IPv4 []string `json:"ipv4,omitempty"`
 }
 
+// Note: Linode interfaces may not currently be available to all users.
+type InstanceCreateOptionsWithLinodeInterfaces struct {
+	InstanceCreateOptions
+	InterfaceGeneration InterfaceGeneration `json:"interface_generation"`
+
+	// This slice of Linode Interfaces conflicts with InstanceCreateOptions.Interfaces
+	Interfaces []LinodeInterfaceCreateOptions `json:"interfaces,omitempty"`
+}
+
 // InstanceCreatePlacementGroupOptions represents the placement group
 // to create this Linode under.
 type InstanceCreatePlacementGroupOptions struct {
@@ -356,7 +365,13 @@ func (c *Client) CreateInstance(ctx context.Context, opts InstanceCreateOptions)
 	return doPOSTRequest[Instance](ctx, c, "linode/instances", opts)
 }
 
-// UpdateInstance updates a Linode instance
+// Create a Linode instance with Linode interfaces.
+// Note: Linode interfaces may not currently be available to all users.
+func (c *Client) CreateInstanceWithLinodeInterfaces(ctx context.Context, opts InstanceCreateOptionsWithLinodeInterfaces) (*Instance, error) {
+	return doPOSTRequest[Instance](ctx, c, "linode/instances", opts)
+}
+
+// UpdateInstance creates a Linode instance
 func (c *Client) UpdateInstance(ctx context.Context, linodeID int, opts InstanceUpdateOptions) (*Instance, error) {
 	e := formatAPIPath("linode/instances/%d", linodeID)
 	return doPUTRequest[Instance](ctx, c, e, opts)
